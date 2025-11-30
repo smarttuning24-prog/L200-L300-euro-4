@@ -1,4 +1,4 @@
-name: Deploy Static Website to GitHub Pages
+name: Deploy L200 Manual to GitHub Pages
 
 on:
   push:
@@ -11,32 +11,35 @@ jobs:
     permissions:
       pages: write
       id-token: write
-    
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    
+
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-    
-    - name: Verify docs folder
-      run: |
-        echo "Checking docs folder structure..."
-        test -f docs/index.html && echo "✓ docs/index.html" || exit 1
-        test -f docs/manifest.json && echo "✓ docs/manifest.json" || exit 1
-        test -f docs/sw-simple.js && echo "✓ docs/sw-simple.js" || exit 1
-        test -d docs/mmc-manuals.ru && echo "✓ docs/mmc-manuals.ru" || exit 1
-        echo "All files verified!"
-    
-    - name: Setup Pages
-      uses: actions/configure-pages@v3
-    
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v2
-      with:
-        path: 'docs'
-    
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v2
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify files in docs folder
+        run: |
+          if [ ! -f docs/index.html ]; then
+            echo "❌ docs/index.html not found!"
+            exit 1
+          fi
+          if [ ! -d docs/mmc-manuals.ru ]; then
+            echo "❌ docs/mmc-manuals.ru directory not found!"
+            exit 1
+          fi
+          echo "✅ All required files in 'docs' folder are present."
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'docs'  # <-- PERHATIKAN: upload folder 'docs', bukan root
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
