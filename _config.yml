@@ -1,51 +1,30 @@
-# GitHub Pages Jekyll Configuration for Mitsubishi L200 Manual
+# GitHub Pages Configuration (Static Site)
+# This file tells GitHub Pages how to serve the static website
 
-# Site settings
+# Basic settings
 title: "Mitsubishi L200 Service Manual"
-description: "Access Mitsubishi L200 technical documentation online and offline"
-url: "https://smarttuning24-prog.github.io/L200-L300-euro-4"
-baseurl: "/L200-L300-euro-4"
+description: "Access L200 technical documentation online and offline"
 
-# Build settings
+# Build settings - DISABLED for static serving
 markdown: kramdown
 theme: null
 plugins: []
 
-# Exclude files from processing
+# Exclude files from GitHub Pages processing
 exclude:
   - .git
   - .gitignore
   - node_modules
   - package.json
   - package-lock.json
-  - README.md
+  - .github
   - VERIFY.sh
   - build.sh
   - server.py
-  - sw.js
-  - sw-simple.js
-  - js/app.js
-  - index.html
-  - offline.html
-  - netlify.toml
-  - vercel.json
-  - .htaccess
-  - INSTALLATION.md
-  - CONTRIBUTING.md
-  - README_OFFLINE.md
-  - START_HERE.md
 
-# Keep files
-keep_files:
-  - mmc-manuals.ru
-  - index-landing.html
-  - manifest.json
-  - sw-simple.js
-  - css
-
-# Output
+# Output directory
 output: _site
 encoding: utf-8
 
-# Collections
-collections_dir: mmc-manuals.ru
+# Force HTTPS
+enforce_https: true
