@@ -1,0 +1,24 @@
+# GitHub Pages Configuration for /docs folder
+# This is the minimal config to avoid conflicts
+
+# Site settings
+title: Mitsubishi L200 Service Manual
+description: Access L200 documentation online and offline
+
+# Build settings
+theme: null
+plugins: []
+
+# No markdown processing - static files only
+markdown: kramdown
+kramdown:
+  input: GFM
+
+# Exclude unnecessary files
+exclude:
+  - README.md
+  - LICENSE
+  - .gitignore
+
+# Output
+output_dir: _site

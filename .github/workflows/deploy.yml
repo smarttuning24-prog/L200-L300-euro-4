@@ -20,13 +20,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
     
-    - name: Verify critical files
+    - name: Verify docs folder
       run: |
-        echo "Verifying static site files..."
-        test -f index-landing.html && echo "✓ index-landing.html" || exit 1
-        test -f manifest.json && echo "✓ manifest.json" || exit 1
-        test -d mmc-manuals.ru && echo "✓ mmc-manuals.ru" || exit 1
-        echo "All required files verified!"
+        echo "Checking docs folder structure..."
+        test -f docs/index.html && echo "✓ docs/index.html" || exit 1
+        test -f docs/manifest.json && echo "✓ docs/manifest.json" || exit 1
+        test -f docs/sw-simple.js && echo "✓ docs/sw-simple.js" || exit 1
+        test -d docs/mmc-manuals.ru && echo "✓ docs/mmc-manuals.ru" || exit 1
+        echo "All files verified!"
     
     - name: Setup Pages
       uses: actions/configure-pages@v3
@@ -34,7 +35,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: '.'
+        path: 'docs'
     
     - name: Deploy to GitHub Pages
       id: deployment
