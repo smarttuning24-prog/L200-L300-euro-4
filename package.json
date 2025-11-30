@@ -1,0 +1,40 @@
+{
+  "name": "mitsubishi-l200-manual-offline",
+  "version": "1.0.0",
+  "description": "Complete offline web application for Mitsubishi L200 Service Manual with PWA support",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000 || npx http-server",
+    "dev": "npx http-server",
+    "build": "bash build.sh",
+    "serve": "python3 server.py || python server.py",
+    "test": "node -c sw.js && node -c js/app.js",
+    "clean": "rm -rf dist/",
+    "archive": "zip -r L200-manual-$(date +%Y%m%d).zip . -x '*.git*' 'node_modules/*' 'dist/*'"
+  },
+  "keywords": [
+    "mitsubishi",
+    "l200",
+    "service manual",
+    "offline",
+    "pwa",
+    "progressive web app",
+    "documentation"
+  ],
+  "author": "Mitsubishi Enthusiasts",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^latest"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/L200-manual-offline.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/L200-manual-offline/issues"
+  },
+  "homepage": "https://github.com/yourusername/L200-manual-offline"
+}

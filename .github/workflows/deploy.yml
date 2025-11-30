@@ -1,0 +1,72 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Check files
+      run: |
+        echo "Checking critical files..."
+        test -f index.html && echo "✓ index.html" || (echo "✗ Missing index.html" && exit 1)
+        test -f sw.js && echo "✓ sw.js" || (echo "✗ Missing sw.js" && exit 1)
+        test -f manifest.json && echo "✓ manifest.json" || (echo "✗ Missing manifest.json" && exit 1)
+        test -f js/app.js && echo "✓ js/app.js" || (echo "✗ Missing js/app.js" && exit 1)
+    
+    - name: Validate JSON
+      run: |
+        python3 -m json.tool manifest.json > /dev/null && echo "✓ manifest.json is valid" || exit 1
+    
+    - name: Check file counts
+      run: |
+        html_count=$(find . -name "*.html" -type f | wc -l)
+        css_count=$(find . -name "*.css" -type f | wc -l)
+        js_count=$(find . -name "*.js" -type f | wc -l)
+        echo "Files found:"
+        echo "  HTML: $html_count"
+        echo "  CSS: $css_count"
+        echo "  JS: $js_count"
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .
+        cname: l200-manual.example.com
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    - name: Create artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: L200-Manual-Build
+        path: .
+        retention-days: 30
+
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+    
+    - name: Validate Service Worker
+      run: |
+        node -c sw.js && echo "✓ Service Worker syntax OK" || exit 1
+        node -c js/app.js && echo "✓ App.js syntax OK" || exit 1
+    
+    - name: Check links (optional)
+      run: |
+        echo "Checking internal links..."
+        # Add link checking if needed
